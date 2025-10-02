@@ -17,7 +17,4 @@ class PopularityBasedRecommendation(RecommendationType):
         pass
 
     def rank_candidates(self, candidates: List[Dict[str, Any]], user_id: int) -> List[dict[str, Any]]:
-
-
-
         pass
