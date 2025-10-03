@@ -7,3 +7,7 @@ class Config:
     ratings_path = r'C:\Users\lunaf\Desktop\Projects\jellyfin-movie-recommender\data\raw\ratings.csv'
     tags_path = r'C:\Users\lunaf\Desktop\Projects\jellyfin-movie-recommender\data\raw\tags.csv'
 
+    # Popularity Based Recommendation Configuration Settings
+    avg_rating = 3
+    rating_counts = 100
+

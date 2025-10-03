@@ -48,3 +48,39 @@ class DataPreprocessing:
             .reset_index()
         )
         return movie_ratings
+
+    def merge_movie_tag_genre(self):
+        # Merge on movieID
+        # tag_genre_data = self.dfs['movies'].merge(self.dfs['links'], on = "movieId", how = "left")
+
+        # Genome Scores + Tags merge
+        genome = self.dfs['genome_score'].merge(self.dfs['genome_tag'], on = "tagId")
+        movie_genome_matrix = genome.pivot_table(
+            index="movieId",
+            columns="tag",
+            values="relevance",
+            fill_value=0
+        )
+
+        top_tags = self.dfs['tags'].value_counts().head(500).index
+        tags_filtered = self.dfs['tags'][self.dfs['tags']['tags'].isin(top_tags)]
+
+        # Film x tag matrix (kaç kullanıcı eklemiş)
+        movie_tag_matrix = tags_filtered.pivot_table(
+            index='movieId',
+            columns='tag',
+            values='userId',
+            aggfunc='count',
+            fill_value=0
+        )
+
+        genres_expanded = self.dfs['movies']['genres'].str.get_dummies(sep='|')
+        genres_expanded['movieId'] = self.dfs['movies']['movieId']
+
+        movie_features = movie_genome_matrix.merge(
+            movie_tag_matrix, left_index=True, right_index=True, how='outer'
+        ).merge(
+            genres_expanded.set_index('movieId'), left_index=True, right_index=True, how='outer'
+        ).fillna(0)
+
+        return movie_features

@@ -7,10 +7,11 @@ Criteris: For popularity-based recommendation:
 import pandas as pd
 from typing import List, Dict, Any
 from base import RecommendationType
+from settings.config import Config
 
 class PopularityBasedRecommendation(RecommendationType):
 
-    def __init__(self, popularity_df: pd.DataFrame, avg_rating: int = 3, rating_counts: int = 100):
+    def __init__(self, popularity_df: pd.DataFrame, avg_rating: int = Config.avg_rating, rating_counts: int = Config.rating_counts):
         super().__init__(title= "Most Popular Movies")
         self.popularity_df = popularity_df
         self.avg_rating = avg_rating
