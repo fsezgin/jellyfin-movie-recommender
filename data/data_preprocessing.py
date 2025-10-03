@@ -40,6 +40,11 @@ class DataPreprocessing:
             print(f"Error loading parquet data: {e}")
             raise
 
-    def merge_ratings_movies(self):
+    def merge_movie_ratings(self):
         movie_data = pd.merge(self.dfs["ratings"],self.dfs["movies"], on='movie_id')
-        movie_data.groupby('title')['rating'].count().sort_values(ascending=False)
+        movie_ratings = (
+            movie_data.groupby("title")["rating"]
+            .agg(avg_rating=lambda x: round(x.mean(), 1), rating_counts="count")
+            .reset_index()
+        )
+        return movie_ratings

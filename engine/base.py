@@ -14,7 +14,6 @@ class RecommendationType(ABC):
     def rank_candidates(self, candidates: List[Dict[str, Any]], user_id: int) -> List[dict[str, Any]]:
         pass
 
-    @abstractmethod
     def get_row(self, user_id: int) -> Dict[str, Any]:
         candidates = self.get_candidates(user_id)
         ranked = self.rank_candidates(candidates, user_id)
